@@ -3,6 +3,17 @@ float maxDistance;
 int spacer;
 int quad_size_factor;
 PShape s;
+float beginX = 20.0;  // Initial x-coordinate
+float beginY = 10.0;  // Initial y-coordinate
+float endX = 570.0;   // Final x-coordinate
+float endY = 320.0;   // Final y-coordinate
+float distX = 1000;          // X-axis distance to move
+float distY = 1000;          // Y-axis distance to move
+float exponent = 4;   // Determines the curve
+float x = 0.0;        // Current x-coordinate
+float y = 0.0;        // Current y-coordinate
+float step = 0.01;    // Size of each step along the path
+float pct = 0.0;      // Percentage traveled (0.0 to 1.0)
 
 void randomized_quad(float x, float y, float size)
 {
@@ -37,6 +48,7 @@ void setup() {
 
     background(0);
     //noLoop();  // Run once and stop
+
 }
 
 void draw() {
@@ -45,13 +57,13 @@ void draw() {
     // the spacer variable, so there are more values in the array
     // than are drawn here. Change the value of the spacer variable
     // to change the density of the points
-    for (int y = 0 + spacer/2; y < height; y += spacer) {
-        for (int x = 0 + spacer/2; x < width; x += spacer) {
+    for (int y = 0 - spacer/2; y < height; y += spacer) {
+        for (int x = 0 - spacer/2; x < width; x += spacer) {
             noFill();
             stroke(255);
             beginShape();
             vertex(x, y); // first point
-            bezierVertex(x+spacer, y, x, y+spacer, x + spacer, y + spacer);
+            bezierVertex(x + spacer, y, x, y + spacer, x + spacer, y + spacer);
             endShape();
 
             stroke(255);
@@ -60,4 +72,13 @@ void draw() {
             randomized_quad(x, y, quad_size_factor);
         }
     }
+    fill(0, 2);
+    rect(0, 0, width, height);
+    pct += step;
+    if (pct < 1.0) {
+        x = beginX + (pct * distX);
+        y = beginY + (pct * distY);
+    }
+    fill(255);
+    ellipse(x, y, 20, 20);
 }
