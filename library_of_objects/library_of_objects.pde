@@ -1,22 +1,3 @@
-float[][] distances;
-float maxDistance;
-int spacer;
-int spacer_pct_empty;
-
-void randomized_quad(float x, float y, float size)
-{
-    quad(
-        x + random(0, size),
-        y + random(0, size),
-        x + random(0, size),
-        y - random(0, size),
-        x - random(0, size),
-        y - random(0, size),
-        x - random(0, size),
-        y + random(0, size)
-    );
-}
-
 void setup() {
   size(1000, 1000);
   maxDistance = dist(width/2, height/2, width, height);

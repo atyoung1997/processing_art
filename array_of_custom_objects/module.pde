@@ -34,6 +34,6 @@ class Module {
   // Custom method for drawing the object
   void display() {
     fill(255);
-    quad(xOffset + x, yOffset + y, 6, 6);
+    randomized_quad(xOffset + x, yOffset + y, unit / 5);
   }
 }
