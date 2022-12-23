@@ -1,84 +1,110 @@
-float[][] distances;
-float maxDistance;
-int spacer;
-int quad_size_factor;
-PShape s;
-float beginX = 20.0;  // Initial x-coordinate
-float beginY = 10.0;  // Initial y-coordinate
-float endX = 570.0;   // Final x-coordinate
-float endY = 320.0;   // Final y-coordinate
-float distX = 1000;          // X-axis distance to move
-float distY = 1000;          // Y-axis distance to move
-float exponent = 4;   // Determines the curve
-float x = 0.0;        // Current x-coordinate
-float y = 0.0;        // Current y-coordinate
-float step = 0.01;    // Size of each step along the path
-float pct = 0.0;      // Percentage traveled (0.0 to 1.0)
+// colors
+color c1 = #10A19D;
+color c2 = #540375;
+color c3 = #FF7000;
+color c4 = #FFBF00;
 
-void randomized_quad(float x, float y, float size)
-{
-    quad(
-        x + random(0, size),
-        y + random(0, size),
-        x + random(0, size),
-        y - random(0, size),
-        x - random(0, size),
-        y - random(0, size),
-        x - random(0, size),
-        y + random(0, size)
-    );
-}
+
+int spacer = 200;
+int boxSize = 100;
+int sphereDirection = 1;
+float sphereSizeIncrement = 0.005;
+float sphereSize = boxSize / 10;
+float sphereMinSize = boxSize / 10;
+float sphereMaxSize = boxSize / 2 - 5;
+float sphereNumIncrements = (sphereMaxSize - sphereMinSize) * 2 / sphereSizeIncrement;
 
 void setup() {
-    size(2000, 2000);
-    maxDistance = dist(width/2, height/2, width, height);
-    distances = new float[width][height];
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-        float distance = dist(width/2, height/2, x, y);
-        distances[x][y] = distance/maxDistance * 255;
-        }
-    }
-    spacer = 200;
-    quad_size_factor = 20;
-
-    strokeWeight(1);
+    size(1000, 1000, P3D);
+    surface.setLocation(1000,30);
+    strokeWeight(3);
     smooth();
 
 
     background(0);
     //noLoop();  // Run once and stop
-
+    println("sphereMinSize: "+sphereMinSize);
+    println("sphereMaxSize: "+sphereMaxSize);
+    println("sphereSizeIncrement: "+sphereSizeIncrement);
+    println("sphereNumIncrements: "+sphereNumIncrements);
+    
 }
 
 void draw() {
-    //background(0);
-    // This embedded loop skips over values in the arrays based on
-    // the spacer variable, so there are more values in the array
-    // than are drawn here. Change the value of the spacer variable
-    // to change the density of the points
+    background(0);
+    float pctOfFullCycle = (sphereSize - sphereMinSize) / sphereMaxSize;
+    
     for (int y = 0 - spacer/2; y < height; y += spacer) {
         for (int x = 0 - spacer/2; x < width; x += spacer) {
             noFill();
-            stroke(255);
-            beginShape();
-            vertex(x, y); // first point
-            bezierVertex(x + spacer, y, x, y + spacer, x + spacer, y + spacer);
-            endShape();
+            
+            //stroke(c1);
+            //beginShape();
+            //vertex(x, y); // first point x, first point y
+            //bezierVertex(x + spacer, y, x, y + spacer, x + spacer, y + spacer); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            //endShape();
+            
+            //stroke(c2);
+            //beginShape();
+            //vertex(x + spacer, y + spacer);
+            //bezierVertex(x + spacer, y, x, y + spacer, x, y);
+            //endShape();
+            
+            //stroke(c1);
+            //beginShape();
+            //vertex(width - x, y); // first point x, first point y
+            //bezierVertex(width - x - spacer, y, width - x, y + spacer, width - x - spacer, y + spacer); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            //endShape();
+            
+            //stroke(c2);
+            //beginShape();
+            //vertex(width - x - spacer, y + spacer); // first point x, first point y
+            //bezierVertex(width - x - spacer, y, width - x, y + spacer, width - x, y); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            //endShape();
+            
 
+            noFill();
+            pushMatrix();
+            translate(x, y);
+            
+            stroke(c1);
+            beginShape();
+            vertex(0, 0); // first point x, first point y
+            bezierVertex(spacer * pctOfFullCycle + noise(0, 0, 0), 0, 0, spacer * pctOfFullCycle, spacer * pctOfFullCycle, spacer * pctOfFullCycle); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            endShape();
+            
+            //stroke(c2);
+            //beginShape();
+            //vertex(spacer * pctOfFullCycle, spacer * pctOfFullCycle);
+            //bezierVertex(spacer * pctOfFullCycle, 0, 0, spacer * pctOfFullCycle, 0, 0);
+            //endShape();
+            
+            //stroke(c1);
+            //beginShape();
+            //vertex(width - x, y); // first point x, first point y
+            //bezierVertex(width - x - spacer, y, width - x, y + spacer, width - x - spacer, y + spacer); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            //endShape();
+            
+            //stroke(c2);
+            //beginShape();
+            //vertex(width - x - spacer, y + spacer); // first point x, first point y
+            //bezierVertex(width - x - spacer, y, width - x, y + spacer, width - x, y); // control point 1 x, control point 1 y, control point 2 x, control point 2 y, ending vertex x, ending vertex y
+            //endShape();
+            
+            //stroke(random(0,255), random(0,255), random(0,255));
             stroke(255);
-            fill(0);
-            //fill(distances[x][y]);
-            randomized_quad(x, y, quad_size_factor);
+            sphere(sphereSize);
+            if(sphereSize > sphereMaxSize || sphereSize < sphereMinSize){
+              sphereDirection *= -1;
+            }
+            sphereSize += sphereSizeIncrement * sphereDirection;
+            stroke(255);
+            box(boxSize);
+            noFill();
+            
+            popMatrix();
+            
+            
         }
     }
-    fill(0, 2);
-    rect(0, 0, width, height);
-    pct += step;
-    if (pct < 1.0) {
-        x = beginX + (pct * distX);
-        y = beginY + (pct * distY);
-    }
-    fill(255);
-    ellipse(x, y, 20, 20);
 }
